@@ -24,8 +24,26 @@ private:
     bool game_is_over() const;
     
     void move_left();
-    
-    void move_non_zero_values_to_left();
-    
-    void join_equal_value_squares();
+	
+	void move_right();
+	
+	void move_up();
+	
+	void move_down();
+	
+	void move_non_zero_values_to_left(bool& is_changed);
+	
+	void join_equal_value_squares_to_left(bool& is_changed);
+	
+	void move_non_zero_values_to_right(bool& is_changed);
+	
+	void join_equal_value_squares_to_right(bool& is_changed);
+	
+	void move_non_zero_values_to_up(bool& is_changed);
+	
+	void join_equal_value_squares_to_up(bool& is_changed);
+	
+	void move_non_zero_values_to_down(bool& is_changed);
+	
+	void join_equal_value_squares_to_down(bool& is_changed);
 };

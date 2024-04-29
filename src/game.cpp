@@ -24,10 +24,10 @@ void GameWindow::run() {
 void GameWindow::populate_the_board() {
     int x{constants::PADDING}, y{constants::PADDING};
     for (auto& row : board) {
-        for (auto& square: row) {
-            square.with_size(constants::CELL_WIDTH);
-            square.set_position(x, y);
-            square.with_color(constants::CELL_FILL_COLOR);
+        for (auto& cell: row) {
+            cell.with_size(constants::CELL_WIDTH);
+            cell.set_position(x, y);
+            cell.with_color(constants::CELL_FILL_COLOR);
             x += constants::CELL_WIDTH + constants::PADDING;
         }
         x = constants::PADDING;
@@ -44,8 +44,16 @@ void GameWindow::handle_events() {
             switch (ev.key.code) {
                 case (sf::Keyboard::Left):
                     move_left();
+					break;
                 case (sf::Keyboard::Right):
-                    1;
+                    move_right();
+					break;
+                case (sf::Keyboard::Up):
+                    move_up();
+					break;
+                case (sf::Keyboard::Down):
+                    move_down();
+					break;
                 default:
                     continue;
             }
@@ -63,7 +71,7 @@ void GameWindow::draw_widgets() {
 
 void GameWindow::create_one_new_initial_square() {
     static std::mt19937 mt(std::chrono::system_clock::now().time_since_epoch().count());
-    static std::uniform_int_distribution<int> dist(0, constants::NUMBER_OF_SQUARES);
+    static std::uniform_int_distribution<int> dist(0, constants::NUMBER_OF_SQUARES - 1);
     static std::bernoulli_distribution bernoulli;
     while (true) {
         auto i = dist(mt);
@@ -77,45 +85,177 @@ void GameWindow::create_one_new_initial_square() {
 
 bool GameWindow::game_is_over() const {
     for (const auto& row : board)
-        for (const auto& square : row)
-            if (square.is_empty())
+        for (const auto& cell : row)
+            if (cell.is_empty())
                 return false;
+	
     return true;
 }
 
 void GameWindow::move_left() {
-    move_non_zero_values_to_left();
-    join_equal_value_squares();
-    move_non_zero_values_to_left();
-    create_one_new_initial_square();
+	bool is_there_a_move{false};
+	move_non_zero_values_to_left(is_there_a_move);
+	join_equal_value_squares_to_left(is_there_a_move);
+	if (is_there_a_move) {
+		move_non_zero_values_to_left(is_there_a_move);
+		create_one_new_initial_square();
+	}
 }
 
-void GameWindow::move_non_zero_values_to_left() {
-    for (int i = 0; i < constants::NUMBER_OF_SQUARES; ++i) {
-        int first_empty{-1};
-        for (int j = 0; j < constants::NUMBER_OF_SQUARES; ++j) {
-            if (board[i][j].is_empty()) {
-                if (first_empty == -1)
-                    first_empty = j;
-            } else if (first_empty != -1) {
-                board[i][first_empty++].set_value(board[i][j].get_value());
-                board[i][j].set_value(0);
-            }
-        }
-    }
+void GameWindow::move_right() {
+	bool is_there_a_move{false};
+	move_non_zero_values_to_right(is_there_a_move);
+	join_equal_value_squares_to_right(is_there_a_move);
+	if (is_there_a_move) {
+		move_non_zero_values_to_right(is_there_a_move);
+		create_one_new_initial_square();
+	}
 }
 
-void GameWindow::join_equal_value_squares() {
-    for (int i = 0; i < constants::NUMBER_OF_SQUARES; ++i) {
-        int left_addable_index{0};
-        for (int j = 1; j < constants::NUMBER_OF_SQUARES; ++j) {
-            if (board[i][j].get_value() == board[i][left_addable_index].get_value()) {
-                board[i][left_addable_index].set_value(board[i][j].get_value()*2);
-                left_addable_index = j+++1;
-            } else {
-                left_addable_index = j;
-            }
-        }
-    }
+void GameWindow::move_up() {
+	bool is_there_a_move{false};
+	move_non_zero_values_to_up(is_there_a_move);
+	join_equal_value_squares_to_up(is_there_a_move);
+	if (is_there_a_move) {
+		move_non_zero_values_to_up(is_there_a_move);
+		create_one_new_initial_square();
+	}
 }
 
+void GameWindow::move_down() {
+	bool is_there_a_move{false};
+	move_non_zero_values_to_down(is_there_a_move);
+	join_equal_value_squares_to_down(is_there_a_move);
+	if (is_there_a_move) {
+		move_non_zero_values_to_down(is_there_a_move);
+		create_one_new_initial_square();
+	}
+}
+
+void GameWindow::move_non_zero_values_to_left(bool& is_changed) {
+	for (int i = 0; i < constants::NUMBER_OF_SQUARES; ++i) {
+		int first_empty{-1};
+		for (int j = 0; j < constants::NUMBER_OF_SQUARES; ++j) {
+			if (board[i][j].is_empty()) {
+				if (first_empty == -1)
+					first_empty = j;
+			} else if (first_empty != -1) {
+				board[i][first_empty++].set_value(board[i][j].get_value());
+				board[i][j].set_value(0);
+				is_changed = true;
+			}
+		}
+	}
+}
+
+void GameWindow::join_equal_value_squares_to_left(bool& is_changed) {
+	for (int i = 0; i < constants::NUMBER_OF_SQUARES; ++i) {
+		int left_addable_index{0};
+		for (int j = 1; j < constants::NUMBER_OF_SQUARES; ++j) {
+			if (board[i][j].get_value() != 0 && board[i][j].get_value() == board[i][left_addable_index].get_value()) {
+				board[i][left_addable_index].set_value(board[i][j].get_value()*2);
+				board[i][j].set_value(0);
+				left_addable_index = j+++1;
+				is_changed = true;
+			} else {
+				left_addable_index = j;
+			}
+		}
+	}
+}
+
+void GameWindow::move_non_zero_values_to_right(bool& is_changed) {
+	for (int i = 0; i < constants::NUMBER_OF_SQUARES; ++i) {
+		int last_empty{-1};
+		for (int j = constants::NUMBER_OF_SQUARES - 1; j >= 0; --j) {
+			if (board[i][j].is_empty()) {
+				if (last_empty == -1)
+					last_empty = j;
+			} else if (last_empty != -1) {
+				board[i][last_empty--].set_value(board[i][j].get_value());
+				board[i][j].set_value(0);
+				is_changed = true;
+			}
+		}
+	}
+}
+
+void GameWindow::join_equal_value_squares_to_right(bool& is_changed) {
+	for (int i = 0; i < constants::NUMBER_OF_SQUARES; ++i) {
+		int right_addable_index{constants::NUMBER_OF_SQUARES - 1};
+		for (int j = constants::NUMBER_OF_SQUARES - 2; j >= 0; --j) {
+			if (board[i][j].get_value() != 0 && board[i][j].get_value() == board[i][right_addable_index].get_value()) {
+				board[i][right_addable_index].set_value(board[i][j].get_value() * 2);
+				board[i][j].set_value(0);
+				right_addable_index = j---1;
+				is_changed = true;
+			} else {
+				right_addable_index = j;
+			}
+		}
+	}
+}
+
+void GameWindow::move_non_zero_values_to_up(bool& is_changed) {
+	for (int j = 0; j < constants::NUMBER_OF_SQUARES; ++j) {
+		int first_empty{-1};
+		for (int i = 0; i < constants::NUMBER_OF_SQUARES; ++i) {
+			if (board[i][j].is_empty()) {
+				if (first_empty == -1)
+					first_empty = i;
+			} else if (first_empty != -1) {
+				board[first_empty++][j].set_value(board[i][j].get_value());
+				board[i][j].set_value(0);
+				is_changed = true;
+			}
+		}
+	}
+}
+
+void GameWindow::join_equal_value_squares_to_up(bool& is_changed) {
+	for (int j = 0; j < constants::NUMBER_OF_SQUARES; ++j) {
+		int left_addable_index{0};
+		for (int i = 1; i < constants::NUMBER_OF_SQUARES; ++i) {
+			if (board[i][j].get_value() != 0 && board[i][j].get_value() == board[left_addable_index][j].get_value()) {
+				board[left_addable_index][j].set_value(board[i][j].get_value() * 2);
+				board[i][j].set_value(0);
+				left_addable_index = i+++1;
+				is_changed = true;
+			} else {
+				left_addable_index = i;
+			}
+		}
+	}
+}
+
+void GameWindow::move_non_zero_values_to_down(bool& is_changed) {
+	for (int j = 0; j < constants::NUMBER_OF_SQUARES; ++j) {
+		int last_empty{-1};
+		for (int i = constants::NUMBER_OF_SQUARES - 1; i >= 0; --i) {
+			if (board[i][j].is_empty()) {
+				if (last_empty == -1)
+					last_empty = i;
+			} else if (last_empty != -1) {
+				board[last_empty--][j].set_value(board[i][j].get_value());
+				board[i][j].set_value(0);
+				is_changed = true;
+			}
+		}
+	}
+}
+
+void GameWindow::join_equal_value_squares_to_down(bool& is_changed) {
+	for (int j = 0; j < constants::NUMBER_OF_SQUARES; ++j) {
+		int left_addable_index{constants::NUMBER_OF_SQUARES - 1};
+		for (int i = constants::NUMBER_OF_SQUARES - 2; i >= 0; --i) {
+			if (board[i][j].get_value() != 0 && board[i][j].get_value() == board[left_addable_index][j].get_value()) {
+				board[left_addable_index][j].set_value(board[i][j].get_value() * 2);
+				board[i][j].set_value(0);
+				left_addable_index = i---1;
+				is_changed = true;
+			} else {
+				left_addable_index = i;
+			}
+		}
+	}
+}
