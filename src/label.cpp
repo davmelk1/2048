@@ -10,7 +10,7 @@ void Label::draw(sf::RenderWindow& window) const {
 
 void Label::update_position(float x, float y, const sf::Vector2f vector2) {
     auto [w, h] = vector2;
-    text.setPosition(x + w / 2, y + h / 2);
+    text.setPosition(x + w / 2 - text.getLocalBounds().width / 2, y + h / 2 - text.getLocalBounds().width / 2);
 }
 
 Label::Label() : size(0), text('0', font) {

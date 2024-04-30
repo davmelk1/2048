@@ -3,6 +3,7 @@
 #include <random>
 #include <chrono>
 #include <iostream>
+#include <thread>
 
 #include "constants.h"
 #include "square.h"
@@ -46,4 +47,8 @@ private:
 	void move_non_zero_values_to_down(bool& is_changed);
 	
 	void join_equal_value_squares_to_down(bool& is_changed);
+	
+	void show_game_over_scene();
+	
+	void reset();
 };

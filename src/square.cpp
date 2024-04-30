@@ -51,3 +51,7 @@ int Square::get_value() const {
 void Square::set_value(int i) {
     label.set_value(i);
 }
+
+void Square::set_game_over_color() {
+	square.setFillColor(constants::COLOR_GAME_OVER);
+}

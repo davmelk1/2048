@@ -4,6 +4,7 @@
 
 #include "label.h"
 #include "value_enum.h"
+#include "constants.h"
 
 class Square{
 public:
@@ -19,6 +20,8 @@ public:
     int get_value() const;
     
     void set_value(int i);
+	
+	void set_game_over_color();
 
 private:
     Square(float x, float y);

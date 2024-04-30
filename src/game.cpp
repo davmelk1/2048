@@ -2,16 +2,19 @@
 
 GameWindow::GameWindow() : window({constants::WINDOW_WIDTH, constants::WINDOW_HEIGHT}, "2048") {
     Label::font.loadFromFile("/home/davit/.local/share/fonts/timesnewarial.ttf");
+GameWindow::GameWindow() : window({constants::WINDOW_WIDTH, constants::WINDOW_HEIGHT+constants::PADDING_TOP}, "2048") {
     window.setFramerateLimit(60);
-    populate_the_board();
-    create_one_new_initial_square();
+	reset();
 }
 
 void GameWindow::run() {
     
     while (window.isOpen()) {
-        if (game_is_over())
-            break;
+        if (game_is_over()) {
+			show_game_over_scene();
+			reset();
+			continue;
+		}
         
         handle_events();
         
@@ -22,12 +25,13 @@ void GameWindow::run() {
 }
 
 void GameWindow::populate_the_board() {
-    int x{constants::PADDING}, y{constants::PADDING};
+    float x{constants::PADDING}, y{constants::PADDING + constants::PADDING_TOP};
     for (auto& row : board) {
         for (auto& cell: row) {
+			cell.set_value(0);
             cell.with_size(constants::CELL_WIDTH);
             cell.set_position(x, y);
-            cell.with_color(constants::CELL_FILL_COLOR);
+            cell.with_color(constants::EMPTY_CELL_FILL_COLOR);
             x += constants::CELL_WIDTH + constants::PADDING;
         }
         x = constants::PADDING;
@@ -54,6 +58,9 @@ void GameWindow::handle_events() {
                 case (sf::Keyboard::Down):
                     move_down();
 					break;
+                case (sf::Keyboard::R):
+                    reset();
+					break;
                 default:
                     continue;
             }
@@ -72,12 +79,12 @@ void GameWindow::draw_widgets() {
 void GameWindow::create_one_new_initial_square() {
     static std::mt19937 mt(std::chrono::system_clock::now().time_since_epoch().count());
     static std::uniform_int_distribution<int> dist(0, constants::NUMBER_OF_SQUARES - 1);
-    static std::bernoulli_distribution bernoulli;
+    static std::uniform_int_distribution<int> generator_0_to_100(0, 100);
     while (true) {
         auto i = dist(mt);
         auto j = dist(mt);
         if (board[i][j].is_empty()) {
-            board[i][j].set_init_value(InitialValue(rand() % 100 < 30));
+            board[i][j].set_init_value(InitialValue(generator_0_to_100(mt) < constants::PROBABILITY_FOR_4));
             break;
         }
     }
@@ -264,4 +271,29 @@ void GameWindow::join_equal_value_squares_to_down(bool& is_changed) {
 			}
 		}
 	}
+}
+
+using namespace std::chrono_literals;
+
+void GameWindow::show_game_over_scene() {
+	window.clear(constants::WINDOW_BACKGROUND_COLOR);
+	sf::Text game_over_text;
+	game_over_text.setString("Game over.");
+	game_over_text.setFillColor({255, 0, 0});
+	game_over_text.setFont(Label::font);
+	game_over_text.setPosition(constants::WINDOW_WIDTH / 2 - game_over_text.getLocalBounds().width / 2,
+							   constants::WINDOW_HEIGHT / 2 - game_over_text.getLocalBounds().height / 2);
+	for (auto& row : board)
+		for (auto& cell : row) {
+			cell.set_game_over_color();
+			cell.draw(window);
+		}
+	window.draw(game_over_text);
+	window.display();
+	sf::sleep(sf::seconds(3));
+}
+
+void GameWindow::reset() {
+	populate_the_board();
+	create_one_new_initial_square();
 }
