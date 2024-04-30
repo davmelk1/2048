@@ -88,7 +88,13 @@ bool GameWindow::game_is_over() const {
         for (const auto& cell : row)
             if (cell.is_empty())
                 return false;
-	
+	for (int i = 0; i < constants::NUMBER_OF_SQUARES; ++i) {
+       for (int j = 1; j < constants::NUMBER_OF_SQUARES; ++j) {
+           if (board[i][j].get_value() == board[i][j-1].get_value() || board[j][i].get_value() == board[j-1][i].get_value()) {
+               return false;
+           }
+       }
+    }
     return true;
 }
 
