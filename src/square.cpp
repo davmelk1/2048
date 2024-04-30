@@ -28,7 +28,8 @@ Square& Square::with_color(const sf::Color& color) {
 
 void Square::draw(sf::RenderWindow& window) const {
     window.draw(square);
-    label.draw(window);
+    if (label.get_value())
+        label.draw(window);
 }
 
 Square::Square() {
