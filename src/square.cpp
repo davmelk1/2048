@@ -33,15 +33,11 @@ void Square::draw(sf::RenderWindow& window) const {
 }
 
 Square::Square() {
-
+	set_value(0);
 }
 
 bool Square::is_empty() const {
     return label.is_empty();
-}
-
-void Square::set_init_value(InitialValue value) {
-    label.set_init_value(value);
 }
 
 int Square::get_value() const {
@@ -49,6 +45,7 @@ int Square::get_value() const {
 }
 
 void Square::set_value(int i) {
+	square.setFillColor(constants::colormap.at(i));
     label.set_value(i);
 }
 
