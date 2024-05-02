@@ -1,7 +1,7 @@
 #pragma once
 
 #include "SFML/Graphics.hpp"
-#include "value_enum.h"
+#include "constants.h"
 
 class Label{
 public:
@@ -12,8 +12,8 @@ public:
     void draw(sf::RenderWindow& window) const;
     
     void update_position(float x, float y, const sf::Vector2f vector2);
-    void set_init_value(InitialValue value);
-    bool is_empty() const;
+	
+	bool is_empty() const;
     
     int get_value() const;
     

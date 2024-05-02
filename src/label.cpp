@@ -21,11 +21,6 @@ bool Label::is_empty() const {
     return !size;
 }
 
-void Label::set_init_value(InitialValue value) {
-    size = value == InitialValue::TWO ? 2 : 4;;
-    text.setString(std::to_string(size));
-}
-
 int Label::get_value() const {
     return size;
 }

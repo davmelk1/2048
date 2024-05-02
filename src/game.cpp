@@ -1,8 +1,7 @@
 #include "game.h"
 
-GameWindow::GameWindow() : window({constants::WINDOW_WIDTH, constants::WINDOW_HEIGHT}, "2048") {
-    Label::font.loadFromFile("/home/davit/.local/share/fonts/timesnewarial.ttf");
 GameWindow::GameWindow() : window({constants::WINDOW_WIDTH, constants::WINDOW_HEIGHT+constants::PADDING_TOP}, "2048") {
+    Label::font.loadFromFile("/home/davit/Downloads/Times-New-Arial/timesnewarial.ttf");
     window.setFramerateLimit(60);
 	reset();
 }
@@ -84,7 +83,7 @@ void GameWindow::create_one_new_initial_square() {
         auto i = dist(mt);
         auto j = dist(mt);
         if (board[i][j].is_empty()) {
-            board[i][j].set_init_value(InitialValue(generator_0_to_100(mt) < constants::PROBABILITY_FOR_4));
+            board[i][j].set_value(generator_0_to_100(mt) < constants::PROBABILITY_FOR_4 ? 4 : 2);
             break;
         }
     }
@@ -279,7 +278,7 @@ void GameWindow::show_game_over_scene() {
 	window.clear(constants::WINDOW_BACKGROUND_COLOR);
 	sf::Text game_over_text;
 	game_over_text.setString("Game over.");
-	game_over_text.setFillColor({255, 0, 0});
+	game_over_text.setFillColor(sf::Color::Red);
 	game_over_text.setFont(Label::font);
 	game_over_text.setPosition(constants::WINDOW_WIDTH / 2 - game_over_text.getLocalBounds().width / 2,
 							   constants::WINDOW_HEIGHT / 2 - game_over_text.getLocalBounds().height / 2);

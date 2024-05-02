@@ -3,7 +3,6 @@
 #include <SFML/Graphics.hpp>
 
 #include "label.h"
-#include "value_enum.h"
 #include "constants.h"
 
 class Square{
@@ -13,8 +12,8 @@ public:
     Square& with_size(float size);
     Square& with_color(const sf::Color& color);
     bool is_empty() const;
-    void set_init_value(InitialValue value);
-    void draw(sf::RenderWindow& window) const;
+	
+	void draw(sf::RenderWindow& window) const;
     Square();
     
     int get_value() const;

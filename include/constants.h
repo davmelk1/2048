@@ -13,7 +13,7 @@ namespace constants{
     constexpr int NUMBER_OF_SQUARES{4};
 	constexpr int PROBABILITY_FOR_4{20};
 	inline std::map<int, sf::Color> colormap{
-			{0, {204, 192, 179}},
+			{0, {150, 150, 150}},
 			{2, {238, 228, 218}},
 			{4, {237, 224, 200}},
 			{8, {242, 177, 121}},
