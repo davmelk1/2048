@@ -1,4 +1,0 @@
-/home/davit/Documents/2048/cmake-build-debug/CMakeFiles/myLibrary.dir
-/home/davit/Documents/2048/cmake-build-debug/CMakeFiles/start_game.dir
-/home/davit/Documents/2048/cmake-build-debug/CMakeFiles/edit_cache.dir
-/home/davit/Documents/2048/cmake-build-debug/CMakeFiles/rebuild_cache.dir
