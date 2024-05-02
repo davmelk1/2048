@@ -27,6 +27,7 @@ int Label::get_value() const {
 
 void Label::set_value(int i) {
     size = i;
+	text.setFillColor(i <= 4 ? sf::Color::Black : sf::Color::White);
     text.setString(std::to_string(i));
     
 }
