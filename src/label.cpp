@@ -10,7 +10,7 @@ void Label::draw(sf::RenderWindow& window) const {
 
 void Label::update_position(float x, float y, const sf::Vector2f vector2) {
     auto [w, h] = vector2;
-    text.setPosition(x + w / 2 - text.getLocalBounds().width / 2, y + h / 2 - text.getLocalBounds().width / 2);
+    text.setPosition(x + w / 2 - text.getLocalBounds().width / 2, y + h / 2 - text.getLocalBounds().height);
 }
 
 Label::Label() : size(0), text('0', font) {
@@ -27,7 +27,8 @@ int Label::get_value() const {
 
 void Label::set_value(int i) {
     size = i;
-	text.setFillColor(i <= 4 ? sf::Color::Black : sf::Color::White);
+	const auto& color = constants::colormap[i];
+	text.setFillColor((color.r*0.299 + color.g*0.587 + color.b*0.114) > 196 ? sf::Color::Black : sf::Color::White);
     text.setString(std::to_string(i));
     
 }
