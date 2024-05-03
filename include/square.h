@@ -21,6 +21,8 @@ public:
     void set_value(int i);
 	
 	void set_game_over_color();
+	
+	void move(sf::Vector2f dxdy);
 
 private:
     Square(float x, float y);

@@ -1,6 +1,8 @@
 #pragma once
 
 #include "SFML/Graphics.hpp"
+#include <iostream>
+
 #include "constants.h"
 
 class Label{
@@ -11,16 +13,18 @@ public:
     
     void draw(sf::RenderWindow& window) const;
     
-    void update_position(float x, float y, const sf::Vector2f vector2);
+    void update_position(float x, float y, const sf::Vector2f cell_size);
 	
 	bool is_empty() const;
     
     int get_value() const;
     
     void set_value(int i);
+	
+	sf::Vector2f get_position();
 
 private:
     int size{0};
     sf::Text text;
-    
+	
 };

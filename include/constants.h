@@ -6,7 +6,7 @@ namespace constants{
     constexpr int WINDOW_WIDTH{600};
     constexpr int WINDOW_HEIGHT{600};
     constexpr int PADDING{10};
-    constexpr int PADDING_TOP{30};
+    constexpr int PADDING_TOP{80};
     constexpr int CELL_WIDTH{(WINDOW_WIDTH-5*PADDING)/4};
     const sf::Color WINDOW_BACKGROUND_COLOR{180, 180, 180};
     const sf::Color EMPTY_CELL_FILL_COLOR{150, 150, 150};

@@ -8,8 +8,8 @@ void Label::draw(sf::RenderWindow& window) const {
     window.draw(text);
 }
 
-void Label::update_position(float x, float y, const sf::Vector2f vector2) {
-    auto [w, h] = vector2;
+void Label::update_position(float x, float y, const sf::Vector2f cell_size) {
+    auto [w, h] = cell_size;
     text.setPosition(x + w / 2 - text.getLocalBounds().width / 2, y + h / 2 - text.getLocalBounds().height);
 }
 
@@ -31,4 +31,8 @@ void Label::set_value(int i) {
 	text.setFillColor((color.r*0.299 + color.g*0.587 + color.b*0.114) > 196 ? sf::Color::Black : sf::Color::White);
     text.setString(std::to_string(i));
     
+}
+
+sf::Vector2f Label::get_position() {
+	return text.getPosition();
 }
