@@ -45,7 +45,10 @@ int Square::get_value() const {
 }
 
 void Square::set_value(int i) {
-	square.setFillColor(constants::colormap.at(i));
+    if (constants::colormap.find(i) != constants::colormap.end())
+	    square.setFillColor(constants::colormap[i]);
+    else
+        square.setFillColor(constants::COLOR_OTHER);
     label.set_value(i);
 }
 
