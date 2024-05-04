@@ -168,6 +168,7 @@ void GameWindow::join_equal_value_squares_to_left(bool& is_changed) {
 		int left_addable_index{0};
 		for (int j = 1; j < constants::NUMBER_OF_SQUARES; ++j) {
 			if (board[i][j].get_value() != 0 && board[i][j].get_value() == board[i][left_addable_index].get_value()) {
+                score_field.add_value(board[i][j].get_value()*2);
 				board[i][left_addable_index].set_value(board[i][j].get_value()*2);
 				board[i][j].set_value(0);
 				left_addable_index = j+++1;
