@@ -11,7 +11,8 @@ void GameWindow::run() {
     while (window.isOpen()) {
         if (game_is_over()) {
 			show_game_over_scene();
-			reset();
+            handle_events();
+            reset();
 			continue;
 		}
         
