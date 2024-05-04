@@ -36,3 +36,7 @@ void Label::set_value(int i) {
 sf::Vector2f Label::get_position() {
 	return text.getPosition();
 }
+
+sf::Vector2f Label::get_text_size() {
+    return {text.getLocalBounds().width, text.getLocalBounds().height};
+}

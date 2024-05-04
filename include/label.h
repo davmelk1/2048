@@ -22,6 +22,8 @@ public:
     void set_value(int i);
 	
 	sf::Vector2f get_position();
+ 
+	sf::Vector2f get_text_size();
 
 private:
     int size{0};
