@@ -71,6 +71,8 @@ void GameWindow::handle_events() {
 void GameWindow::draw_widgets() {
     window.clear(constants::WINDOW_BACKGROUND_COLOR);
     
+    score_field.draw(window);
+    
     for (const auto& row : board)
         for (const auto& cell: row)
             cell.draw(window);
@@ -198,6 +200,7 @@ void GameWindow::join_equal_value_squares_to_right(bool& is_changed) {
 		int right_addable_index{constants::NUMBER_OF_SQUARES - 1};
 		for (int j = constants::NUMBER_OF_SQUARES - 2; j >= 0; --j) {
 			if (board[i][j].get_value() != 0 && board[i][j].get_value() == board[i][right_addable_index].get_value()) {
+                score_field.add_value(board[i][j].get_value()*2);
 				board[i][right_addable_index].set_value(board[i][j].get_value() * 2);
 				board[i][j].set_value(0);
 				right_addable_index = j---1;
@@ -230,6 +233,7 @@ void GameWindow::join_equal_value_squares_to_up(bool& is_changed) {
 		int left_addable_index{0};
 		for (int i = 1; i < constants::NUMBER_OF_SQUARES; ++i) {
 			if (board[i][j].get_value() != 0 && board[i][j].get_value() == board[left_addable_index][j].get_value()) {
+                score_field.add_value(board[i][j].get_value()*2);
 				board[left_addable_index][j].set_value(board[i][j].get_value() * 2);
 				board[i][j].set_value(0);
 				left_addable_index = i+++1;
@@ -262,6 +266,7 @@ void GameWindow::join_equal_value_squares_to_down(bool& is_changed) {
 		int left_addable_index{constants::NUMBER_OF_SQUARES - 1};
 		for (int i = constants::NUMBER_OF_SQUARES - 2; i >= 0; --i) {
 			if (board[i][j].get_value() != 0 && board[i][j].get_value() == board[left_addable_index][j].get_value()) {
+                score_field.add_value(board[i][j].get_value()*2);
 				board[left_addable_index][j].set_value(board[i][j].get_value() * 2);
 				board[i][j].set_value(0);
 				left_addable_index = i---1;
@@ -296,4 +301,5 @@ void GameWindow::show_game_over_scene() {
 void GameWindow::reset() {
 	populate_the_board();
 	create_one_new_initial_square();
+    score_field.reset();
 }

@@ -7,6 +7,7 @@
 
 #include "constants.h"
 #include "square.h"
+#include "score_field.h"
 
 class GameWindow{
 public:
@@ -15,6 +16,7 @@ public:
 private:
     sf::RenderWindow window;
     std::array<std::array<Square, constants::NUMBER_OF_SQUARES>, constants::NUMBER_OF_SQUARES> board;
+    ScoreField score_field;
     
     void populate_the_board();
     void handle_events();
