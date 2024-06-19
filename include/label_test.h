@@ -36,7 +36,7 @@ TEST_F(LabelTest, settingPosition) {
 }
 
 TEST_F(LabelTest, checkTextWidthHeight) {
-    Label::font.loadFromFile("/home/davit/.local/share/fonts/timesnewarial.ttf");
+    Label::font.loadFromFile("../timesnewarial.ttf");
     sf::Text text{"2", Label::font};
     label.set_value(2);
     auto size = label.get_text_size();
