@@ -1,7 +1,7 @@
 #include "game.h"
 
 GameWindow::GameWindow() : window({constants::WINDOW_WIDTH, constants::WINDOW_HEIGHT+constants::PADDING_TOP}, "2048") {
-    Label::font.loadFromFile("/home/davit/Downloads/Times-New-Arial/timesnewarial.ttf");
+    Label::font.loadFromFile("../timesnewarial.ttf");
     window.setFramerateLimit(60);
 	reset();
 }
